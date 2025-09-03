@@ -1,0 +1,60 @@
+services:
+  llmcord:
+    build: .
+    image: llmcord:latest
+    container_name: llmcord
+    env_file:
+      - ../.env
+    environment:
+      - CONFIG_PATH=/app/config.yaml
+      - LOG_DIR=/app/logs
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./logs:/app/logs
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    restart: unless-stopped
+    init: true
+    stop_signal: SIGTERM
+    stop_grace_period: 20s
+    networks:
+      - llmcord_net
+    # Healthcheck stub; refine if a readiness endpoint is added
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import os; import sys; sys.exit(0 if os.path.exists(\"/app/llmcord.py\") else 1)'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  mcp-server:
+    image: node:18-alpine
+    container_name: mcp-server
+    working_dir: /app
+    user: "node"
+    command: ["node", "/app/server/server.js"]
+    volumes:
+      - ./mcp-data:/home/node/.aim
+      - ./mcp-knowledge-graph:/app/server:ro
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    init: true
+    stop_signal: SIGTERM
+    stop_grace_period: 20s
+    networks:
+      - llmcord_net
+    environment:
+      - MEMORY_PATH=/home/node/.aim
+
+volumes:
+  mcp_data: {}
+
+networks:
+  llmcord_net:
+    driver: bridge

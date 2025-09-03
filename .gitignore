@@ -1,0 +1,15 @@
+docs
+memory.jsonl
+.env
+CLAUDE.md
+.kilocodemodes
+.bmad-core/
+.prjroot
+.claude
+.cursorrules
+
+# MCP knowledge graph data bind-mounted by docker-compose; do not commit
+llmcord/mcp-data/
+llmcord/logs/
+mcp-data
+llmcord/config.yaml

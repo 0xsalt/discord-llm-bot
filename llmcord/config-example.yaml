@@ -1,0 +1,91 @@
+# llmcord configuration example
+# Copy this file to config.yaml and edit values as needed.
+# Secrets (Discord token, OpenAI key) are provided via environment variables only.
+
+app:
+  status_message: "llmcord: community AI assistant"
+  max_context_messages: 12
+  reply_preamble: true
+  response:
+    stream: true
+    max_chunk_chars: 1800
+    code_block_boundary_safe: true
+  identity:
+    name: "varuna"
+    addressing_aliases: ["varuna"]
+    persona: ""
+discord:
+  token_env: "DISCORD_BOT_TOKEN"
+  require_mention_in_guilds: true
+  allow_dm: true
+
+llm:
+  provider: "openai"          # or "compatible"
+  api_key_env: "OPENAI_API_KEY"
+  base_url: "https://api.openai.com/v1"  # override for compatible providers
+  model: "gpt-4o-mini"        # active model identifier (view-only via /model)
+  temperature: 0.2
+  top_p: 1.0
+  max_tokens: 1024
+  request_timeout_secs: 60
+
+memory_service:
+  enabled: true
+  base_url: "http://mcp-server:8080"
+  timeout_s: 2
+  retrieve_limit: 5
+
+permissions:
+  users:
+    allow: []                 # Discord user IDs as strings
+    deny: []
+  roles:
+    allow: []                 # Discord role IDs as strings
+    deny: []
+  channels:
+    allow: []                 # Discord channel IDs as strings
+    deny: []
+
+logging:
+  level: "INFO"               # DEBUG | INFO | WARNING | ERROR
+  json: true
+  include_context: ["guild_id","channel_id","user_id","message_id"]
+  rotation: "session"         # none | size | session
+  max_bytes: 1048576          # used when rotation == size
+  backups: 3
+
+hot_reload:
+  enabled: true
+  watch_paths:
+    - "config.yaml"
+  debounce_ms: 200
+
+attachments:
+  allow_images: true
+  allow_text: true
+  max_total_mb: 10
+  text:
+    max_chars: 50000
+    summarize_overflow: true
+  images:
+    max_count: 5
+
+security:
+  allowed_guilds: []          # Guild IDs; empty means allow all (subject to other rules)
+  blocked_guilds: []
+
+prompts:
+  enable_identity: true
+  enable_memory_context: true
+  enable_policy: true
+  policy: |
+    Respond concisely. Prefer bullet lists for enumeration.
+    Do not reveal internal IDs or secrets.
+    When Memory Context is present, leverage it explicitly and avoid repetition.
+
+# Notes:
+# - Provide secrets via environment:
+#     - DISCORD_BOT_TOKEN = "your discord bot token"
+#     - OPENAI_API_KEY    = "your openai or compatible api key"
+# - The /model command is view-only; switching models at runtime is out of scope for MVP.
+# - Application must run via Docker only. Local Python execution is not supported.
