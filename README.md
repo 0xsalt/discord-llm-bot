@@ -1,4 +1,4 @@
-# llmcord
+# discord-llm-bot
 
 A Discord bot that provides a collaborative LLM experience using a single pre-configured model. Docker-only runtime. Core logic resides in a single file: discord-llm-bot.py.
 
