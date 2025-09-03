@@ -1,6 +1,6 @@
 # llmcord
 
-A Discord bot that provides a collaborative LLM experience using a single pre-configured model. Docker-only runtime. Core logic resides in a single file: llmcord.py.
+A Discord bot that provides a collaborative LLM experience using a single pre-configured model. Docker-only runtime. Core logic resides in a single file: discord-llm-bot.py.
 
 Status
 - MVP scope per PRD shards (docs/shards/*.jsonl).
@@ -62,7 +62,7 @@ Repository Structure
 - docker-compose.dev.yaml
 - Dockerfile
 - LICENSE.md
-- llmcord.py (core application)
+- discord-llm-bot.py (core application)
 - memory_manager.py (memory service client)
 - prompt_builder.py (prompt construction)
 - README.md
@@ -83,7 +83,7 @@ Secrets Policy
 - If you need to rotate or switch providers, update environment and config.yaml.
 
 Next Steps
-- Implement llmcord.py with:
+- Implement discord-llm-bot.py with:
   - structlog setup and rotation policy.
   - config loader with hot reload.
   - Discord client with intents, handlers, and /model command.
@@ -121,7 +121,7 @@ prompts:
 Where these are used:
 - Identity header, Policy block, and Memory Context are generated in prompt_builder.py:
   - identity_block(), policy_block(), memory_context_block() are composed by build_prompt_messages().
-- Conversation content (user/assistant messages + attachments) is built in llmcord.py and intentionally excludes system blocks:
+- Conversation content (user/assistant messages + attachments) is built in discord-llm-bot.py and intentionally excludes system blocks:
   - build_messages_for_llm() produces conversation-only messages.
 - on_message collects any Memory Context items and passes them (without mutating the conversation) to PromptBuilder.
 

@@ -6,7 +6,7 @@ Composable prompt construction utilities for llmcord.
 - memory_context_block: optional memory summary block
 - combine blocks with conversation messages to form final prompt
 
-This module is intentionally dependency-light and does not import llmcord.py to avoid cycles.
+This module is intentionally dependency-light and does not import discord-llm-bot.py to avoid cycles.
 """
 
 from __future__ import annotations

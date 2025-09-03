@@ -27,4 +27,4 @@ ENV CONFIG_PATH=/app/config.yaml \
 
 # Default command (compose will mount /app/config.yaml)
 # Run the top-level script directly (project layout is a single-file app inside this directory).
-CMD ["python", "/app/llmcord.py"]
+CMD ["python", "/app/discord-llm-bot.py"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-llmcord.py
+discord-llm-bot.py
 Core single-file application for the Discord LLM bot MVP.
 
 Capabilities (per PRD and Architecture):

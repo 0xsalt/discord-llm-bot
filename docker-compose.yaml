@@ -19,10 +19,10 @@ services:
     stop_signal: SIGTERM
     stop_grace_period: 20s
     networks:
-      - llmcord_net
+      - discord-llm-bot_net
     # Healthcheck stub; refine if a readiness endpoint is added
     healthcheck:
-      test: ["CMD-SHELL", "python -c 'import os; import sys; sys.exit(0 if os.path.exists(\"/app/llmcord.py\") else 1)'"]
+      test: ["CMD-SHELL", "python -c 'import os; import sys; sys.exit(0 if os.path.exists(\"/app/discord-llm-bot.py\") else 1)'"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -48,7 +48,7 @@ services:
     stop_signal: SIGTERM
     stop_grace_period: 20s
     networks:
-      - llmcord_net
+      - discord-llm-bot_net
     environment:
       - MEMORY_PATH=/home/node/.aim
 
@@ -56,5 +56,5 @@ volumes:
   mcp_data: {}
 
 networks:
-  llmcord_net:
+  discord-llm-bot_net:
     driver: bridge
