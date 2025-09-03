@@ -1,5 +1,5 @@
 # Development overrides to make Ctrl-C behave intuitively and stop containers.
-# Usage (from llmcord/):
+# Usage (from project root):
 #   docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up
 #
 # In dev, disable restart policies so containers actually stop on SIGINT,

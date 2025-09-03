@@ -14,15 +14,14 @@ Quick Start (Docker-only)
    - OPENAI_API_KEY=<your openai-compatible api key>
 
 2) Create config.yaml from the example:
-   - cp llmcord/config-example.yaml llmcord/config.yaml
+   - cp config-example.yaml config.yaml
    - Adjust values to your needs.
 
 3) Build and run:
-   - cd llmcord
    - docker compose up --build
 
 Configuration
-- See llmcord/config-example.yaml for a complete reference.
+- See config-example.yaml for a complete reference.
 - memory_service configuration controls the MCP Knowledge Graph integration:
   - Keys: enabled (bool), base_url (string), timeout_s (int), retrieve_limit (int)
   - Example:
@@ -56,15 +55,22 @@ Development Notes
   - name, size, type, revision date (best effort, configurable).
 
 Repository Structure
-- llmcord/
-  - .gitignore
-  - config-example.yaml
-  - docker-compose.yaml
-  - Dockerfile
-  - LICENSE.md
-  - llmcord.py (core application; to be implemented)
-  - README.md
-  - requirements.txt
+- .gitignore
+- config-example.yaml
+- config.yaml (user-created, not tracked)
+- docker-compose.yaml
+- docker-compose.dev.yaml
+- Dockerfile
+- LICENSE.md
+- llmcord.py (core application)
+- memory_manager.py (memory service client)
+- prompt_builder.py (prompt construction)
+- README.md
+- requirements.txt
+- mcp-knowledge-graph/ (MCP server)
+  - server.js
+- mcp-data/ (runtime data, not tracked)
+- logs/ (runtime logs, not tracked)
 - docs/
   - shards/ (sharded brief, prd, architecture with index)
   - backlog/engineering.jsonl
@@ -94,7 +100,7 @@ You can customize the bot’s identity and enable/disable system prompt modules 
 - Prompt modules are toggled under the top-level `prompts` section.
 - System blocks are composed centrally in `prompt_builder.py`.
 
-Example configuration (llmcord/config.yaml or llmcord/config-example.yaml):
+Example configuration (config.yaml or config-example.yaml):
 ```yaml
 app:
   identity:
@@ -128,5 +134,5 @@ Operational notes:
 - If `prompts.enable_memory_context` is false or no items are retrieved, the Memory Context block is omitted.
 - If `prompts.enable_policy` is true and `prompts.policy` is non-empty, a “Policy:” system block is included after Identity.
 - Per-guild partitioning for memory retrieval/upserts is the default to keep server knowledge separate.
-- MCP data persists in the repository at `llmcord/mcp-data` (bind-mounted to the server). Ensure host permissions allow UID 1000 to write:
-  - `mkdir -p ./llmcord/mcp-data && sudo chown -R 1000:1000 ./llmcord/mcp-data && sudo chmod 775 ./llmcord/mcp-data`
+- MCP data persists in the repository at `mcp-data` (bind-mounted to the server). Ensure host permissions allow UID 1000 to write:
+  - `mkdir -p ./mcp-data && sudo chown -R 1000:1000 ./mcp-data && sudo chmod 775 ./mcp-data`

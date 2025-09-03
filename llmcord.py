@@ -41,17 +41,11 @@ from discord.ext import commands  # type: ignore
 from openai import OpenAI  # type: ignore
 from openai.types.chat import ChatCompletionChunk  # type: ignore
 
-# Memory service client (support both package and script execution)
-try:
-    from .memory_manager import MemoryManager, entity, relation, observation  # type: ignore
-except Exception:  # pragma: no cover
-    from memory_manager import MemoryManager, entity, relation, observation  # type: ignore
+# Memory service client
+from memory_manager import MemoryManager, entity, relation, observation  # type: ignore
 
 # Prompt builder (modular prompt construction)
-try:
-    from .prompt_builder import build_prompt_messages  # type: ignore
-except Exception:  # pragma: no cover
-    from prompt_builder import build_prompt_messages  # type: ignore
+from prompt_builder import build_prompt_messages  # type: ignore
 
 # ---------------------------
 # Slash command group: /memory summarize
